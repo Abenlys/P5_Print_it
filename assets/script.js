@@ -22,14 +22,6 @@ const slides = [
 const arrowLeft = document.querySelector(".arrow_left");
 const arrowRight = document.querySelector(".arrow_right");
 
-//On ajoute un eventlistener pour écouter les clics pour chacune des arrows
-arrowLeft.addEventListener("click", function() {
-	console.log('Flèche gauche cliquée');
-});
-
-arrowRight.addEventListener("click", function() {
-	console.log('Flèche droite cliquée');
-});
 
 // Pour compter le nb d'objet dans le tableau slides
 let nbDot = slides.length;
@@ -57,3 +49,61 @@ function genererDot () {
 }
 // Il faut appeler la fonction sinon cela ne fonctionne pas
 genererDot();
+
+
+// Maintenant, il faut gérer le dot_selected 
+// Slide 0 = Dot 0
+
+//Ajoute des variables currentSlide et maxSlides
+let currentSlide = 0
+const maxSlides = slides.length
+
+//Récupération des éléments DOM nécessaires
+const bannerImg = document.querySelector('.banner-img')
+const tagline = document.querySelector('#banner p')
+const dots = document.querySelectorAll('.dot')
+
+
+//Fonction pour mettre à jour la bannière avec données de la slide actuelle
+function updateBanner() {
+	console.log('updateBanner() called')
+	bannerImg.src = `./assets/images/slideshow/${slides[currentSlide].image}`;
+	console.log(`.assets/images/slideshow/${slides[currentSlide].image}`)
+	tagline.innerHTML = slides[currentSlide].tagLine
+	//Enlever la classe "dot_selected" de toutes les balises div.dot
+	dots.forEach(dot => {
+		dot.classList.remove('dot_selected')
+	});
+	//Ajouter la classe 'dot_selected' à la balise div correspondante
+	dots[currentSlide].classList.add('dot_selected')
+}
+//Ajout des écouteurs d'évènements pour les flèches gauche et droite
+arrowRight.addEventListener('click', nextSlide)
+arrowLeft.addEventListener('click', prevSlide)
+updateBanner();
+
+//Fonction pour changer de slide vers la droite
+function nextSlide() {
+	console.log("prevSlide() called")
+	currentSlide++
+	if (currentSlide >= maxSlides) {
+		currentSlide = 0
+	}
+	console.log('Flèche droite cliquée')
+	updateBanner();
+}
+
+
+//Fonction pour changer de slide vers la gauche
+function prevSlide() {
+	currentSlide--
+	if (currentSlide < 0) {
+		currentSlide = maxSlides - 1
+	}
+	console.log('Flèche gauche cliquée')
+	updateBanner();
+}
+
+
+
+
